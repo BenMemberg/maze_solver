@@ -10,3 +10,13 @@ def format_row(row):
         row_str += char
     return row_str
 
+
+def format_maze(maze):
+    """
+    Converts a maze from matrix format to ASCII graphical format for output.
+    """
+    maze_str = ""
+    for row in maze:
+        maze_str += format_row(row)
+        maze_str += "\n"
+    return maze_str

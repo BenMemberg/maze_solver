@@ -1,6 +1,9 @@
-#!/usr/bin/env python
+# solver.py
+
 import csv
 import argparse
+
+from utils import format_maze
 
 
 def load_maze(maze_file):
@@ -29,3 +32,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     maze = load_maze(args.maze_file)
+    print("Maze Provided:\n" + format_maze(maze))
