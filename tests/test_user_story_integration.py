@@ -2,7 +2,7 @@
 
 import unittest
 
-from solver import load_maze
+from solver import load_maze, find_starting_coordinates
 
 
 class TestUserStories(unittest.TestCase):
@@ -16,6 +16,10 @@ class TestUserStories(unittest.TestCase):
         maze = load_maze(maze_file)
         self.assertEqual(maze, expected_maze, "Failed to load maze correctly!")
 
+        # Test finding the maze entry point
+        maze_start = find_starting_coordinates(maze)
+        self.assertEqual(maze_start, (1,0), "Entry Point should be (1,0)")
+
     def test_user_story_2(self):
         # Test loading in the maze
         expected_maze = [
@@ -28,6 +32,10 @@ class TestUserStories(unittest.TestCase):
         maze = load_maze(maze_file)
         self.assertEqual(maze, expected_maze, "Failed to load maze correctly!")
 
+        # Test finding the maze entry point
+        maze_start = find_starting_coordinates(maze)
+        self.assertEqual(maze_start, (2,0), "Entry Point should be (2,0)")
+
     def test_user_story_3(self):
         # Test loading in the maze
         expected_maze = [
@@ -39,6 +47,10 @@ class TestUserStories(unittest.TestCase):
         maze_file = "mazes/user_story_3.csv"
         maze = load_maze(maze_file)
         self.assertEqual(maze, expected_maze, "Failed to load maze correctly!")
+
+        # Test finding the maze entry point
+        maze_start = find_starting_coordinates(maze)
+        self.assertEqual(maze_start, (1,0), "Entry Point should be (1,0)")
 
     def test_user_story_4(self):
         # Test loading in the maze
@@ -55,6 +67,10 @@ class TestUserStories(unittest.TestCase):
         maze = load_maze(maze_file)
         self.assertEqual(maze, expected_maze, "Failed to load maze correctly!")
 
+        # Test finding the maze entry point
+        maze_start = find_starting_coordinates(maze)
+        self.assertEqual(maze_start, (1,0), "Entry Point should be (1,0)")
+
     def test_user_story_5(self):
         # Test loading in the maze
         expected_maze = [
@@ -70,6 +86,9 @@ class TestUserStories(unittest.TestCase):
         maze = load_maze(maze_file)
         self.assertEqual(maze, expected_maze, "Failed to load maze correctly!")
 
+        # Test finding the maze entry point
+        maze_start = find_starting_coordinates(maze)
+        self.assertEqual(maze_start, (1,0), "Entry Point should be (1,0)")
 
     def test_full_maze(self):
         # Test loading in the maze
@@ -89,6 +108,9 @@ class TestUserStories(unittest.TestCase):
         maze = load_maze(maze_file)
         self.assertEqual(maze, expected_maze, "Failed to load maze correctly!")
 
+        # Test finding the maze entry point
+        maze_start = find_starting_coordinates(maze)
+        self.assertEqual(maze_start, (4,0), "Entry Point should be (4,0)")
 
 if __name__ == '__main__':
     unittest.main()
