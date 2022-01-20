@@ -3,7 +3,7 @@
 import csv
 import argparse
 
-from utils import format_maze
+from utils import format_maze, format_row
 
 
 def load_maze(maze_file):
@@ -19,6 +19,17 @@ def load_maze(maze_file):
             maze.append([int(i) for i in row])
     return maze
 
+def find_starting_coordinates(maze):
+    """
+    Finds the coordinate of the entrance to the maze. If there is more than
+    one entrance, returns the first entry coordinates found.
+    """
+    entry_row = maze[0]
+    for point, val in enumerate(entry_row):
+        if int(val)==0:
+            return (point, 0)
+    raise ValueError("Entry not found! Entry row given:\n" + format_row(entry_row))
+
 
 if __name__ == '__main__':
 
@@ -33,3 +44,6 @@ if __name__ == '__main__':
 
     maze = load_maze(args.maze_file)
     print("Maze Provided:\n" + format_maze(maze))
+
+    maze_start = find_starting_coordinates(maze)
+    print("Maze Entry: " + str(maze_start))
