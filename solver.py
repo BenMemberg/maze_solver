@@ -37,8 +37,22 @@ class MazeAgent(object):
     given maze.
     """
     def __init__(self, maze, maze_start):
+        # Initialize maze data from args
         self.maze = maze
-        self.maze_start = maze_start
+        self.start_row, self.start_col = maze_start
+
+        # Initialize agent's route matrix
+        self.routes = self.zeros_matrix(len(maze[0]), len(maze))
+        self.routes[self.start_col][self.start_row] = 1
+
+    def zeros_matrix(self, width, length):
+        """
+        Returns a matrix of zeros with the given dimensions.
+        """
+        zeros = []
+        for i in range(length):
+            zeros.append([0 for j in range(width)])
+        return zeros
 
 
 if __name__ == '__main__':
