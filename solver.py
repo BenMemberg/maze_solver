@@ -31,6 +31,16 @@ def find_starting_coordinates(maze):
     raise ValueError("Entry not found! Entry row given:\n" + format_row(entry_row))
 
 
+class MazeAgent(object):
+    """
+    A class that holds the data and methods needed for an agent to navigate a
+    given maze.
+    """
+    def __init__(self, maze, maze_start):
+        self.maze = maze
+        self.maze_start = maze_start
+
+
 if __name__ == '__main__':
 
     # parse command line arguments
@@ -47,3 +57,5 @@ if __name__ == '__main__':
 
     maze_start = find_starting_coordinates(maze)
     print("Maze Entry: " + str(maze_start))
+
+    maze_agent = MazeAgent(maze, maze_start)
