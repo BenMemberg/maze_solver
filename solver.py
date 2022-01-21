@@ -38,3 +38,5 @@ if __name__ == '__main__':
 
     maze_agent = MazeAgent(maze)
     print(f"Maze Entry: {maze_agent.maze_start}")
+
+    maze_exit = maze_agent.find_exit()

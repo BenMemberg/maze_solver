@@ -66,3 +66,27 @@ class MazeAgent(object):
             self.evaluate_coord(location[0], location[1]) and
             location[1] == (len(self.maze) - 1))
 
+    def find_exit(self, timeout=1000):
+        """
+        This method navigates the maze and fills out self.routes until it
+        finds the exit of the maze or times out. A maze exit is defined by
+        an open space in the final row of the maze.
+        """
+        time = 0
+        step = 1
+        location = list(self.maze_start)
+        while time < timeout:
+            # Mark current position
+            self.routes[location[1]][location[0]] = step
+            # Check if current position is an exit
+            if self.agent_at_exit(location):
+                print(f"Found Exit: ({location[0]}, {location[1]})")
+                print(self.routes)
+                return (location[0], location[1])
+            # Evaluate one space below the current agent location
+            elif self.evaluate_coord(location[0], location[1] + 1):
+                # If the space is open, advance the location
+                location[1] += 1
+                step += 1
+            time += 1
+        raise TimeoutError("Maze solver timed out while searching for exit!")
