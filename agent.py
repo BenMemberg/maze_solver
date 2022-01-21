@@ -56,3 +56,13 @@ class MazeAgent(object):
         """
         return self.maze[col][row] == 0
 
+    def agent_at_exit(self, location):
+        """
+        Evaluates a given tuple location to determine if the agent is at the
+        maze exit. A maze exit must be a valid open coordinate and it must be
+        in the final row of the maze.
+        """
+        return (
+            self.evaluate_coord(location[0], location[1]) and
+            location[1] == (len(self.maze) - 1))
+
