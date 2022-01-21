@@ -47,8 +47,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--maze-file', '-m',
-        required=True,
-        help='The .csv file containing the maze data.')
+        required=False,
+        default='mazes/full_maze.csv',
+        help=('The .csv file containing the maze data. '
+              'Check out the mazes/ folder for examples.'))
 
     args = parser.parse_args()
 
