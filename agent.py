@@ -17,6 +17,9 @@ class MazeAgent(object):
         self.routes = self.zeros_matrix(len(maze[0]), len(maze))
         self.routes[self.start_col][self.start_row] = 1
 
+    def __str__(self):
+        return format_maze(self.maze)
+
     @property
     def maze_start(self):
         """
