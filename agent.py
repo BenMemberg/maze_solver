@@ -11,7 +11,7 @@ class MazeAgent(object):
     def __init__(self, maze):
         # Initialize maze data from args
         self.maze = maze
-        self.start_row, self.start_col = self.find_starting_coordinates()
+        self.start_row, self.start_col = self.find_maze_start()
 
         # Initialize agent's route matrix
         self.routes = self.zeros_matrix(len(maze[0]), len(maze))
@@ -27,7 +27,7 @@ class MazeAgent(object):
         """
         return (self.start_row, self.start_col)
 
-    def find_starting_coordinates(self):
+    def find_maze_start(self):
         """
         Finds the coordinate of the entrance to the maze. If there is more than
         one entrance, returns the first entry coordinates found.
