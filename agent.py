@@ -47,3 +47,12 @@ class MazeAgent(object):
         for i in range(length):
             zeros.append([0 for j in range(width)])
         return zeros
+
+    def evaluate_coord(self, row, col):
+        """
+        Evaluates the given coordinate to see if it is a wall or open space.
+
+        Returns True if the coordinate is open space, False if it is a wall.
+        """
+        return self.maze[col][row] == 0
+
