@@ -1,8 +1,9 @@
-# tests.py
+# tests/test_user_story_integration.py
 
 import unittest
 
-from solver import load_maze, MazeAgent
+from agent import MazeAgent
+from solver import load_maze
 
 
 class TestUserStories(unittest.TestCase):

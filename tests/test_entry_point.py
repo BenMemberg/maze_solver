@@ -1,7 +1,7 @@
 # tests/test_entry_point.py
 import unittest
 
-from solver import MazeAgent
+from agent import MazeAgent
 
 
 class TestMazeEntryPoint(unittest.TestCase):
