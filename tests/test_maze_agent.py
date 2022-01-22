@@ -103,3 +103,19 @@ class TestMazeAgent(unittest.TestCase):
         self.maze_agent.routes[3][4] = 6
         # Evaluate an open space that has been visted after the current step
         self.assertFalse(self.maze_agent.evaluate_coord(4, 3, self.step))
+
+    def test_evaluate_coord_row_out_of_maze_bounds(self):
+        # Test row value below maze bounds
+        self.assertFalse(self.maze_agent.evaluate_coord(-1, 3, self.step))
+        # Test row value above maze bounds
+        row_out_of_bounds = len(self.maze[0]) + 1
+        self.assertFalse(
+            self.maze_agent.evaluate_coord(row_out_of_bounds, 3, self.step))
+
+    def test_evaluate_coord_column_out_of_maze_bounds(self):
+        # Test column value below maze bounds
+        self.assertFalse(self.maze_agent.evaluate_coord(2, -1, self.step))
+        # Test column value above maze bounds
+        col_out_of_bounds = len(self.maze) + 1
+        self.assertFalse(
+            self.maze_agent.evaluate_coord(2, col_out_of_bounds, self.step))
