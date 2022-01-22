@@ -119,3 +119,19 @@ class TestMazeAgent(unittest.TestCase):
         col_out_of_bounds = len(self.maze) + 1
         self.assertFalse(
             self.maze_agent.evaluate_coord(2, col_out_of_bounds, self.step))
+
+    def test_agent_at_exit_open_space_last_row(self):
+        # Test the open space in the final row (the exit)
+        self.assertTrue(self.maze_agent.agent_at_exit([7, 9], self.step))
+
+    def test_agent_at_exit_wall_space_last_row(self):
+        # Test a wall space in the final row
+        self.assertFalse(self.maze_agent.agent_at_exit([3, 9], self.step))
+
+    def test_agent_at_exit_open_space_not_last_row(self):
+        # Test an open space in the middle of the maze
+        self.assertFalse(self.maze_agent.agent_at_exit([2, 4], self.step))
+
+    def test_agent_at_exit_wall_space_not_last_row(self):
+        # Test a wall space in the middle of the maze
+        self.assertFalse(self.maze_agent.agent_at_exit([3, 2], self.step))
