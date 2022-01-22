@@ -58,3 +58,28 @@ class TestMazeAgent(unittest.TestCase):
             zeros_matrix_full,
             expected_zeros_matrix_full,
             "Zeros matrix genererated incorrectly!")
+
+    def test_evaluate_coord_new_spaces_first_row_wall(self):
+        # Evaluate a wall in the first row
+        self.assertFalse(self.maze_agent.evaluate_coord(2, 0, self.step))
+
+    def test_evaluate_coord_new_spaces_first_row_open(self):
+        # Evaluate the maze entry point
+        self.assertTrue(self.maze_agent.evaluate_coord(4, 0, self.step))
+
+    def test_evaluate_coord_new_spaces_hall_wall(self):
+        # Evaluate a wall within the maze
+        self.assertFalse(self.maze_agent.evaluate_coord(5, 4, self.step))
+
+    def test_evaluate_coord_new_spaces_hall_open(self):
+        # Evaluate an open space within the maze
+        self.assertTrue(self.maze_agent.evaluate_coord(7, 5, self.step))
+
+    def test_evaluate_coord_new_spaces_last_row_wall(self):
+        # Evaluate a wall in the exit row
+        self.assertFalse(self.maze_agent.evaluate_coord(5, 9, self.step))
+
+    def test_evaluate_coord_new_spaces_last_row_open(self):
+        # Evaluate the maze exit point
+        self.assertTrue(self.maze_agent.evaluate_coord(7, 9, self.step))
+
