@@ -22,6 +22,10 @@ class TestUserStories(unittest.TestCase):
         self.assertEqual(
             maze_agent.maze_start, (1, 0), "Entry Point should be (1, 0)")
 
+        # Use the maze agent to find the maze exit coordinates
+        maze_exit = maze_agent.find_exit()
+        self.assertEqual(maze_exit, (1, 0), "Maze Exit should be (1, 0)")
+
     def test_user_story_2(self):
         # Test loading in the maze
         expected_maze = [
@@ -39,6 +43,10 @@ class TestUserStories(unittest.TestCase):
         self.assertEqual(
             maze_agent.maze_start, (2, 0), "Entry Point should be (2, 0)")
 
+        # Use the maze agent to find the maze exit coordinates
+        maze_exit = maze_agent.find_exit()
+        self.assertEqual(maze_exit, (2, 3), "Maze Exit should be (2, 3)")
+
     def test_user_story_3(self):
         # Test loading in the maze
         expected_maze = [
@@ -55,6 +63,10 @@ class TestUserStories(unittest.TestCase):
         maze_agent = MazeAgent(maze)
         self.assertEqual(
             maze_agent.maze_start, (1, 0), "Entry Point should be (1, 0)")
+
+        # Use the maze agent to find the maze exit coordinates
+        maze_exit = maze_agent.find_exit()
+        self.assertEqual(maze_exit, (3, 3), "Maze Exit should be (3, 3)")
 
     def test_user_story_4(self):
         # Test loading in the maze
@@ -76,6 +88,10 @@ class TestUserStories(unittest.TestCase):
         self.assertEqual(
             maze_agent.maze_start, (1, 0), "Entry Point should be (1, 0)")
 
+        # Use the maze agent to find the maze exit coordinates
+        maze_exit = maze_agent.find_exit()
+        self.assertEqual(maze_exit, (3, 6), "Maze Exit should be (3, 6)")
+
     def test_user_story_5(self):
         # Test loading in the maze
         expected_maze = [
@@ -95,6 +111,10 @@ class TestUserStories(unittest.TestCase):
         maze_agent = MazeAgent(maze)
         self.assertEqual(
             maze_agent.maze_start, (1, 0), "Entry Point should be (1, 0)")
+
+        # Use the maze agent to find the maze exit coordinates
+        maze_exit = maze_agent.find_exit()
+        self.assertEqual(maze_exit, (3, 5), "Maze Exit should be (3, 5)")
 
     def test_full_maze(self):
         # Test loading in the maze
@@ -118,6 +138,11 @@ class TestUserStories(unittest.TestCase):
         maze_agent = MazeAgent(maze)
         self.assertEqual(
             maze_agent.maze_start, (4, 0), "Entry Point should be (4, 0)")
+
+        # Use the maze agent to find the maze exit coordinates
+        maze_exit = maze_agent.find_exit()
+        self.assertEqual(maze_exit, (7, 9), "Maze Exit should be (7, 9)")
+
 
 if __name__ == '__main__':
     unittest.main()
