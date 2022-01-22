@@ -83,3 +83,23 @@ class TestMazeAgent(unittest.TestCase):
         # Evaluate the maze exit point
         self.assertTrue(self.maze_agent.evaluate_coord(7, 9, self.step))
 
+    def test_evaluate_coord_already_traversed_equal_step(self):
+        # Set maze agent traversed path data
+        self.step = 5
+        self.maze_agent.routes[3][5] = 5
+        # Evaluate an open space that has been visted at the current step
+        self.assertTrue(self.maze_agent.evaluate_coord(5, 3, self.step))
+
+    def test_evaluate_coord_already_traversed_lower_step(self):
+        # Set maze agent traversed path data
+        self.step = 5
+        self.maze_agent.routes[2][5] = 4
+        # Evaluate an open space that has been visted before the current step
+        self.assertFalse(self.maze_agent.evaluate_coord(5, 2, self.step))
+
+    def test_evaluate_coord_already_traversed_higher_step(self):
+        # Set maze agent traversed path data
+        self.step = 5
+        self.maze_agent.routes[3][4] = 6
+        # Evaluate an open space that has been visted after the current step
+        self.assertFalse(self.maze_agent.evaluate_coord(4, 3, self.step))
