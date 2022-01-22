@@ -30,6 +30,12 @@ if __name__ == '__main__':
         default='mazes/full_maze.csv',
         help=('The .csv file containing the maze data. '
               'Check out the mazes/ folder for examples.'))
+    parser.add_argument(
+        '--timeout', '-t',
+        required=False,
+        default=1000,
+        help=('The timeout setting for the maze solver. The default of '
+              '1000 should be sufficient for simple 10x10 mazes.'))
 
     args = parser.parse_args()
 
@@ -39,7 +45,7 @@ if __name__ == '__main__':
     maze_agent = MazeAgent(maze)
     print(f"Maze Entry Found: {maze_agent.maze_start}")
 
-    maze_exit = maze_agent.find_exit()
+    maze_exit = maze_agent.find_exit(args.timeout)
     print(f"Maze Exit Found: {maze_agent.maze_exit}")
     print("\nMaze Solution:\n" + format_maze(maze, maze_agent.maze_path))
     print("Solution Path: \n" + str(maze_agent.maze_path))
