@@ -71,7 +71,7 @@ class MazeAgent(object):
             return False
 
         # Ensure the agent isn't trying to navigate backwards
-        if (self.routes[col][row] > 0 and self.routes[col][row] < curr_step):
+        if (self.routes[col][row] > 0 and self.routes[col][row] != curr_step):
             return False
 
         # Return True if the coordinate is to an open space
@@ -126,5 +126,13 @@ class MazeAgent(object):
                 # If the space is open, advance the location
                 location[1] -= 1
                 step += 1
+            else:
+                # Remove current location from maze path
+                self.maze_path.pop()
+                # Remove the prior location from the maze path and set it to
+                # the current location (It will be re-added on the next loop).
+                location = list(self.maze_path.pop())
+                # Decrement current step
+                step -= 1
             time += 1
         raise TimeoutError("Maze solver timed out while searching for exit!")
