@@ -102,5 +102,15 @@ class MazeAgent(object):
                 # If the space is open, advance the location
                 location[0] += 1
                 step += 1
+            # Evaluate one space to the left of current agent location
+            elif self.evaluate_coord(location[0] - 1, location[1]):
+                # If the space is open, advance the location
+                location[0] -= 1
+                step += 1
+            # Evaluate one space above the current agent location
+            elif self.evaluate_coord(location[0], location[1] - 1):
+                # If the space is open, advance the location
+                location[1] -= 1
+                step += 1
             time += 1
         raise TimeoutError("Maze solver timed out while searching for exit!")
