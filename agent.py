@@ -56,22 +56,32 @@ class MazeAgent(object):
             zeros.append([0 for j in range(width)])
         return zeros
 
-    def evaluate_coord(self, row, col):
+    def evaluate_coord(self, row, col, curr_step):
         """
         Evaluates the given coordinate to see if it is a wall or open space.
 
         Returns True if the coordinate is open space, False if it is a wall.
         """
+        # Ensure the given coordinate is within the maze bounds
+        if (row < 0 or row >= len(self.maze[0]) or
+                col < 0 or col >= len(self.maze)):
+            return False
+
+        # Ensure the agent isn't trying to navigate backwards
+        if (self.routes[col][row] > 0 and self.routes[col][row] < curr_step):
+            return False
+
+        # Return True if the coordinate is to an open space
         return self.maze[col][row] == 0
 
-    def agent_at_exit(self, location):
+    def agent_at_exit(self, location, curr_step):
         """
         Evaluates a given tuple location to determine if the agent is at the
         maze exit. A maze exit must be a valid open coordinate and it must be
         in the final row of the maze.
         """
         return (
-            self.evaluate_coord(location[0], location[1]) and
+            self.evaluate_coord(location[0], location[1], curr_step) and
             location[1] == (len(self.maze) - 1))
 
     def find_exit(self, timeout=1000):
@@ -87,28 +97,28 @@ class MazeAgent(object):
             # Mark current position
             self.routes[location[1]][location[0]] = step
             # Check if current position is an exit
-            if self.agent_at_exit(location):
+            if self.agent_at_exit(location, step):
                 self.exit_row = location[0]
                 self.exit_col = location[1]
                 print(f"Found Exit: {self.maze_exit}")
                 return self.maze_exit
             # Evaluate one space below the current agent location
-            elif self.evaluate_coord(location[0], location[1] + 1):
+            elif self.evaluate_coord(location[0], location[1] + 1, step):
                 # If the space is open, advance the location
                 location[1] += 1
                 step += 1
             # Evaluate one space to the right of current agent location
-            elif self.evaluate_coord(location[0] + 1, location[1]):
+            elif self.evaluate_coord(location[0] + 1, location[1], step):
                 # If the space is open, advance the location
                 location[0] += 1
                 step += 1
             # Evaluate one space to the left of current agent location
-            elif self.evaluate_coord(location[0] - 1, location[1]):
+            elif self.evaluate_coord(location[0] - 1, location[1], step):
                 # If the space is open, advance the location
                 location[0] -= 1
                 step += 1
             # Evaluate one space above the current agent location
-            elif self.evaluate_coord(location[0], location[1] - 1):
+            elif self.evaluate_coord(location[0], location[1] - 1, step):
                 # If the space is open, advance the location
                 location[1] -= 1
                 step += 1
