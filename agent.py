@@ -11,7 +11,10 @@ class MazeAgent(object):
     def __init__(self, maze):
         # Initialize maze data from args
         self.maze = maze
+        # Call instance method to find the maze's starting coordinates
         self.start_row, self.start_col = self.find_maze_start()
+        # Initialize the class attributes tha trepresent the maze solution
+        self.maze_path = []
         self.exit_row, self.exit_col = None, None
 
         # Initialize agent's route matrix
@@ -96,6 +99,7 @@ class MazeAgent(object):
         while time < timeout:
             # Mark current position
             self.routes[location[1]][location[0]] = step
+            self.maze_path.append((location[0], location[1]))
             # Check if current position is an exit
             if self.agent_at_exit(location, step):
                 self.exit_row = location[0]
