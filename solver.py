@@ -37,6 +37,9 @@ if __name__ == '__main__':
     print("Maze Provided:\n" + format_maze(maze))
 
     maze_agent = MazeAgent(maze)
-    print(f"Maze Entry: {maze_agent.maze_start}")
+    print(f"Maze Entry Found: {maze_agent.maze_start}")
 
     maze_exit = maze_agent.find_exit()
+    print(f"Maze Exit Found: {maze_agent.maze_exit}")
+    print("\nMaze Solution:\n" + format_maze(maze, maze_agent.maze_path))
+    print("Solution Path: \n" + str(maze_agent.maze_path))

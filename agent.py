@@ -104,7 +104,6 @@ class MazeAgent(object):
             if self.agent_at_exit(location, step):
                 self.exit_row = location[0]
                 self.exit_col = location[1]
-                print(f"Found Exit: {self.maze_exit}")
                 return self.maze_exit
             # Evaluate one space below the current agent location
             elif self.evaluate_coord(location[0], location[1] + 1, step):
