@@ -12,6 +12,7 @@ class MazeAgent(object):
         # Initialize maze data from args
         self.maze = maze
         self.start_row, self.start_col = self.find_maze_start()
+        self.exit_row, self.exit_col = None, None
 
         # Initialize agent's route matrix
         self.routes = self.zeros_matrix(len(maze[0]), len(maze))
@@ -26,6 +27,13 @@ class MazeAgent(object):
         Returns the coordinates of the maze start as a tuple.
         """
         return (self.start_row, self.start_col)
+
+    @property
+    def maze_exit(self):
+        """
+        Returns the coordinates of the maze start as a tuple.
+        """
+        return (self.exit_row, self.exit_col)
 
     def find_maze_start(self):
         """
@@ -80,9 +88,10 @@ class MazeAgent(object):
             self.routes[location[1]][location[0]] = step
             # Check if current position is an exit
             if self.agent_at_exit(location):
-                print(f"Found Exit: ({location[0]}, {location[1]})")
-                print(self.routes)
-                return (location[0], location[1])
+                self.exit_row = location[0]
+                self.exit_col = location[1]
+                print(f"Found Exit: {self.maze_exit}")
+                return self.maze_exit
             # Evaluate one space below the current agent location
             elif self.evaluate_coord(location[0], location[1] + 1):
                 # If the space is open, advance the location
