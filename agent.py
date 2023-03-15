@@ -13,6 +13,12 @@ class MazeAgent(object):
         self.maze = maze
         # Call instance method to find the maze's starting coordinates
         self.start_row, self.start_col = self.find_maze_start()
+        self.location = {
+            'front': [],
+            'center': [],
+            'back': []
+        }
+        self.step = 0
         # Initialize the class attributes tha trepresent the maze solution
         self.maze_path = []
         self.exit_row, self.exit_col = None, None
@@ -59,7 +65,7 @@ class MazeAgent(object):
             zeros.append([0 for j in range(width)])
         return zeros
 
-    def evaluate_coord(self, row, col, curr_step):
+    def evaluate_coord(self, row, col):
         """
         Evaluates the given coordinate to see if it is a wall or open space.
 
@@ -71,21 +77,54 @@ class MazeAgent(object):
             return False
 
         # Ensure the agent isn't trying to navigate backwards
-        if (self.routes[col][row] > 0 and self.routes[col][row] != curr_step):
+        if (self.routes[col][row] > 0 and self.routes[col][row] != self.step):
             return False
 
         # Return True if the coordinate is to an open space
         return self.maze[col][row] == 0
 
-    def agent_at_exit(self, location, curr_step):
+    def evaluate_location(self, x_shift, y_shift):
+        """
+        Evaluates the given coordinate to see if it is a wall or open space.
+
+        Returns True if the coordinate is open space, False if it is a wall.
+        """
+        return (self.evaluate_coord(self.location['front'][0] + 1, self.location['front'][1]) and
+                self.evaluate_coord(self.location['center'][0] + 1, self.location['center'][1]) and
+                self.evaluate_coord(self.location['back'][0] + 1, self.location['back'][1]))
+
+    def agent_at_exit(self):
         """
         Evaluates a given tuple location to determine if the agent is at the
         maze exit. A maze exit must be a valid open coordinate and it must be
         in the final row of the maze.
         """
+        front_valid = self.evaluate_coord(self.location['front'][0], self.location['front'][1])
+        center_valid = self.evaluate_coord(self.location['center'][0], self.location['center'][1])
+        back_valid = self.evaluate_coord(self.location['back'][0], self.location['back'][1])
         return (
-            self.evaluate_coord(location[0], location[1], curr_step) and
-            location[1] == (len(self.maze) - 1))
+            front_valid and center_valid and back_valid and
+            self.location['front'][1] == (len(self.maze) - 1))
+
+    def enter_maze(self):
+        """
+        Evaluates a given tuple location to determine if the agent is at the
+        maze exit. A maze exit must be a valid open coordinate and it must be
+        in the final row of the maze.
+        """
+        # Check back coord
+        if (self.evaluate_coord(self.start_row, self.start_col)):
+            self.location['back'] = [self.start_row, self.start_col]
+
+        # check center coord
+        if (self.evaluate_coord(self.start_row, self.start_col + 1)):
+            self.location['center'] = [self.start_row, self.start_col + 1]
+
+        # check front coord
+        if (self.evaluate_coord(self.start_row, self.start_col + 2)):
+            self.location['front'] = [self.start_row, self.start_col + 2]
+
+        self.maze_path.append(self.maze_start)
 
     def find_exit(self, timeout=1000):
         """
@@ -94,37 +133,38 @@ class MazeAgent(object):
         an open space in the final row of the maze.
         """
         time = 0
-        step = 1
-        location = list(self.maze_start)
+        self.step = 1
+        self.enter_maze()
         while time < timeout:
             # Mark current position
-            self.routes[location[1]][location[0]] = step
-            self.maze_path.append((location[0], location[1]))
+            self.routes[self.location['center'][1]][self.location['center'][0]] = self.step
+            self.maze_path.append((self.location['center'][0], self.location['center'][1]))
             # Check if current position is an exit
-            if self.agent_at_exit(location, step):
-                self.exit_row = location[0]
-                self.exit_col = location[1]
+            if self.agent_at_exit(location):
+                self.exit_row = self.location['front'][0]
+                self.exit_col = self.location['front'][1]
+                self.maze_path.append(self.maze_exit)
                 return self.maze_exit
             # Evaluate one space below the current agent location
-            elif self.evaluate_coord(location[0], location[1] + 1, step):
+            elif self.evaluate_location(0, 1):
                 # If the space is open, advance the location
                 location[1] += 1
-                step += 1
+                self.step += 1
             # Evaluate one space to the right of current agent location
-            elif self.evaluate_coord(location[0] + 1, location[1], step):
+            elif self.evaluate_location(1, 0):
                 # If the space is open, advance the location
                 location[0] += 1
-                step += 1
+                self.step += 1
             # Evaluate one space to the left of current agent location
-            elif self.evaluate_coord(location[0] - 1, location[1], step):
+            elif self.evaluate_location(-1, 0):
                 # If the space is open, advance the location
                 location[0] -= 1
-                step += 1
+                self.step += 1
             # Evaluate one space above the current agent location
-            elif self.evaluate_coord(location[0], location[1] - 1, step):
+            elif self.evaluate_location(0, -1):
                 # If the space is open, advance the location
                 location[1] -= 1
-                step += 1
+                self.step += 1
             else:
                 # Remove current location from maze path
                 self.maze_path.pop()
@@ -132,6 +172,6 @@ class MazeAgent(object):
                 # the current location (It will be re-added on the next loop).
                 location = list(self.maze_path.pop())
                 # Decrement current step
-                step -= 1
+                self.step -= 1
             time += 1
         raise TimeoutError("Maze solver timed out while searching for exit!")
