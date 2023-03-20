@@ -3,7 +3,7 @@ import csv
 import argparse
 
 from agent import MazeAgent
-from utils import format_maze
+from generator import generate_maze
 
 
 def load_maze(maze_file):
@@ -25,11 +25,15 @@ if __name__ == '__main__':
     # parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--maze-file', '-m',
+        '--maze-file', '-f',
         required=False,
         default='mazes/full_maze.csv',
         help=('The .csv file containing the maze data. '
               'Check out the mazes/ folder for examples.'))
+    parser.add_argument(
+        '--maze-size', '-m',
+        required=False,
+        help='The width by height dimension (in the form "WxH") to use to generate a maze.')
     parser.add_argument(
         '--timeout', '-t',
         required=False,
@@ -39,8 +43,14 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    maze = load_maze(args.maze_file)
-    print("Maze Provided:\n" + format_maze(maze))
+    if args.maze_size:
+        width, height = [int(i) for i in args.maze_size.split('x')]
+        print(f"Generating a ({width}x{height}) Maze")
+        maze = generate_maze(width, height)
+    else:
+        print(f"Loading maze from the file: {args.maze_file}")
+        maze = load_maze(args.maze_file)
+
 
     maze_agent = MazeAgent(maze)
     print(f"Maze Entry Found: {maze_agent.maze_start}")
