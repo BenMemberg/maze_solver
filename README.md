@@ -11,17 +11,20 @@ arguments:
     the path from the project folder to the target maze file to solve. If the 
     maze file argument is not provided, the solver will use the file
     "mazes/full_maze.csv" by default.
+- `--maze-size MxN` or `-m MxN`: The width by height dimension (in the form 
+    "WxH") to use to generate a maze. If the maze size argument is not provided,
+     the solver will use the the maze file arg instead.
 - `--timeout <INT>` or `-t <INT>`: The timeout should be an integer
     representing the number of steps the solver can explore before it times
     out. Defaults to 1000 if not provided (1000 should be sufficient for most
     simple mazes but it should be increased for mazes more complex mazes).
 
-Running with a file
+Running with a file:
 ```bash
 python solver.py --maze-file mazes/full_maze.csv
 ```
 
-Running with a generated maze
+Running with a generated maze:
 ```bash
 python solver.py --maze-size 30x20
 ```
