@@ -7,13 +7,14 @@ from utils import print_maze
 from constants import WALL, OPEN, UNVISITED
 
 
-def count_adj_open_cells(maze, rand_wall):
+def count_adj_open_cells(maze, coord):
     """
     Counts the number of spaces adjacent to the given space that have been marked as open cells.
+    The expected format for the target coordinate is: [y, x]
 
     Returns the count of open spaces next to the target.
     """
-    wall_y, wall_x = rand_wall
+    wall_y, wall_x = coord
     open_cells = 0
     if (maze[wall_y - 1][wall_x] == OPEN):
         open_cells += 1
