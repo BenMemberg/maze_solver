@@ -16,8 +16,14 @@ arguments:
     out. Defaults to 1000 if not provided (1000 should be sufficient for most
     simple mazes but it should be increased for mazes more complex mazes).
 
+Running with a file
 ```bash
-python maze_solver.py --maze-file mazes/full_maze.csv
+python solver.py --maze-file mazes/full_maze.csv
+```
+
+Running with a generated maze
+```bash
+python solver.py --maze-size 30x20
 ```
 
 ### Custom Maze Files
