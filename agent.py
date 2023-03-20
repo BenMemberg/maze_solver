@@ -1,7 +1,8 @@
 # agent.py
+from colorama import  Fore, init
 
 from utils import format_maze, format_row
-
+from constants import WALL, OPEN
 
 class MazeAgent(object):
     """
@@ -19,7 +20,6 @@ class MazeAgent(object):
 
         # Initialize agent's route matrix
         self.routes = self.zeros_matrix(len(maze[0]), len(maze))
-        self.routes[self.start_col][self.start_row] = 1
 
     def __str__(self):
         return format_maze(self.maze)
@@ -45,7 +45,7 @@ class MazeAgent(object):
         """
         entry_row = self.maze[0]
         for point, val in enumerate(entry_row):
-            if val == 0:
+            if val == OPEN:
                 return (point, 0)
         raise ValueError(
             "Entry not found! Entry row given:\n" + format_row(entry_row))
@@ -95,6 +95,7 @@ class MazeAgent(object):
         """
         time = 0
         step = 1
+        self.routes[self.start_col][self.start_row] = 1
         location = list(self.maze_start)
         while time < timeout:
             # Mark current position
@@ -135,3 +136,28 @@ class MazeAgent(object):
                 step -= 1
             time += 1
         raise TimeoutError("Maze solver timed out while searching for exit!")
+
+    def print_maze_state(self):
+        """
+        Prints out the current state of maze agent in the maze matrix in colored ASCII format.
+
+        Walls are printed as a red '#', open un-visited spaces are printed as a black/gray '0',
+        the solution path spaces are printed as a yellow 'X', and visited spaces that are not
+        part of the solution path are printed as green 'V's.
+
+        Returns nothing, outputs to the console.
+        """
+        init()
+        for i in range(0, len(self.maze)):
+            for j in range(0, len(self.maze[i])):
+                if (j, i) in self.maze_path:
+                    print(Fore.YELLOW + 'X', end="  ")
+                elif (self.routes[i][j] > 0):
+                    print(Fore.GREEN + 'V', end="  ")
+                elif (self.maze[i][j] == OPEN):
+                    print(Fore.BLACK + '0', end="  ")
+                elif (self.maze[i][j] == WALL):
+                    print(Fore.RED + '#', end="  ")
+                else:
+                    print(Fore.MAGENTA + str(self.maze[i][j]), end="  ")
+            print(Fore.WHITE + '\n')
