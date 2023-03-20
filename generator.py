@@ -37,8 +37,8 @@ def mark_wall(maze, walls, target):
     """
     if (maze[target[0]][target[1]] != OPEN):
         maze[target[0]][target[1]] = WALL
-    if (target not in walls):
-        walls.append(target)
+        if (target not in walls):
+            walls.append(target)
     return maze, walls
 
 def set_entrance(maze):
