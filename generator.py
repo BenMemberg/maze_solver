@@ -252,3 +252,21 @@ def generate_maze(width, height):
 
     return maze
 
+
+if __name__ == '__main__':
+    # parse command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--maze-size', '-m',
+        required=False,
+        default='20x10',
+        help='The width by height dimension (in the form "WxH") to use to generate a maze.')
+    args = parser.parse_args()
+
+    width, height = [int(i) for i in args.maze_size.split('x')]
+    print(f"Generating a ({width}x{height}) Maze")
+
+    maze = generate_maze(width, height)
+
+    # Print final maze
+    print_maze(maze)
