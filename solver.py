@@ -53,9 +53,14 @@ if __name__ == '__main__':
 
 
     maze_agent = MazeAgent(maze)
+
+    print("Initial Maze:")
+    maze_agent.print_maze_state()
+
     print(f"Maze Entry Found: {maze_agent.maze_start}")
 
     maze_exit = maze_agent.find_exit(args.timeout)
     print(f"Maze Exit Found: {maze_agent.maze_exit}")
-    print("\nMaze Solution:\n" + format_maze(maze, maze_agent.maze_path))
+    print("\nMaze Solution:")
+    maze_agent.print_maze_state()
     print("Solution Path: \n" + str(maze_agent.maze_path))
