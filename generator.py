@@ -73,3 +73,182 @@ def set_exit(maze):
     maze[len(maze) - 1][exit_x] = OPEN
 
     return maze
+
+def generate_maze(width, height):
+    """
+    Generates a maze in matrix format with the given width and height. In this format walls are
+    represented by 1s and open cells are represented by 0s.
+
+    Uses "Randomized Prim's Algorithm" to generate the maze. For more info visit following link:
+    https://en.wikipedia.org/wiki/Maze_generation_algorithm
+
+    Returns a 2D matrix representation of the maze.
+    """
+    maze = []
+    walls = []
+
+    # Mark all cells as unvisited
+    for i in range(0, height):
+        line = []
+        for j in range(0, width):
+            line.append(UNVISITED)
+        maze.append(line)
+
+    # Randomize starting point (excluding the maze edge spaces)
+    starting_height = int(random.random() * (height - 2)) + 1
+    starting_width = int(random.random() * (width - 2)) + 1
+
+    # Mark starting cell as open and surrounding walls as walls
+    maze[starting_height][starting_width] = OPEN
+    # ORDER: UP,DOWN,LEFT,RIGHT
+    maze[starting_height - 1][starting_width] = WALL
+    maze[starting_height + 1][starting_width] = WALL
+    maze[starting_height][starting_width - 1] = WALL
+    maze[starting_height][starting_width + 1] = WALL
+
+    # add surrounding walls to the walls list
+    walls.append([starting_height - 1, starting_width])
+    walls.append([starting_height + 1, starting_width])
+    walls.append([starting_height, starting_width - 1])
+    walls.append([starting_height, starting_width + 1])
+
+    while (walls):
+        # Pick a random wall
+        rand_wall = walls[int(random.random()*len(walls))-1]
+
+        # Check if the random wall meets the following condition:
+        #   U        Key: (O=Open, W=Wall, U=Unvisited)
+        # U W O
+        #   U
+        # and is not on the left maze wall
+        if (rand_wall[1] != 0 and
+                maze[rand_wall[0]][rand_wall[1]-1] == UNVISITED and
+                maze[rand_wall[0]][rand_wall[1]+1] == OPEN):
+            # Find the number of surrounding open cells
+            open_cells = count_adj_open_cells(maze, rand_wall)
+            if (open_cells < 2):
+                # Change the wall space to an open cell space
+                maze[rand_wall[0]][rand_wall[1]] = OPEN
+
+                # Mark the walls of the newly marked open cell
+                # Upper cell
+                if (rand_wall[0] != 0):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0] - 1, rand_wall[1]])
+
+                # Bottom cell
+                if (rand_wall[0] != height-1):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0] + 1, rand_wall[1]])
+
+                # Leftmost cell
+                if (rand_wall[1] != 0):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0], rand_wall[1] - 1])
+            # Remove processed wall from walls list
+            walls.remove(rand_wall)
+            continue
+        
+        # Check if the random wall meets the following condition:
+        #   U        Key: (O=Open, W=Wall, U=Unvisited)
+        # U W U
+        #   O
+        # and is not on the upper maze wall
+        if (rand_wall[0] != 0 and
+                maze[rand_wall[0]-1][rand_wall[1]] == UNVISITED and
+                maze[rand_wall[0]+1][rand_wall[1]] == OPEN):
+            # Find the number of surrounding cells
+            open_cells = count_adj_open_cells(maze, rand_wall)
+            if (open_cells < 2):
+                # Change the wall space to an open cell space
+                maze[rand_wall[0]][rand_wall[1]] = OPEN
+
+                # Mark the walls of the newly marked open cell
+                # Upper cell
+                if (rand_wall[0] != 0):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0] - 1, rand_wall[1]])
+
+                # Left cell
+                if (rand_wall[1] != 0):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0], rand_wall[1] - 1])
+
+                # Right cell
+                if (rand_wall[1] != width - 1):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0], rand_wall[1] + 1])
+            # Remove processed wall from walls list
+            walls.remove(rand_wall)
+            continue
+
+        # Check if the random wall meets the following condition:
+        #   O        Key: (O=Open, W=Wall, U=Unvisited)
+        # U W U
+        #   U
+        # and is not on the bottom maze wall
+        if (rand_wall[0] != height-1 and
+                maze[rand_wall[0]+1][rand_wall[1]] == UNVISITED and
+                maze[rand_wall[0]-1][rand_wall[1]] == OPEN):
+            # Find the number of surrounding cells
+            open_cells = count_adj_open_cells(maze, rand_wall)
+            if (open_cells < 2):
+                # Change the wall space to an open cell space
+                maze[rand_wall[0]][rand_wall[1]] = OPEN
+
+                # Mark the walls of the newly marked open cell
+                # Bottom cell
+                if (rand_wall[0] != height - 1):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0] + 1, rand_wall[1]])
+
+                # Left cell
+                if (rand_wall[1] != 0):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0], rand_wall[1] - 1])
+
+                # Right cell
+                if (rand_wall[1] != width - 1):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0], rand_wall[1] + 1])
+            # Remove processed wall from walls list
+            walls.remove(rand_wall)
+            continue
+
+        # Check if the random wall meets the following condition:
+        #   U        Key: (O=Open, W=Wall, U=Unvisited)
+        # O W U
+        #   U
+        # and is not on the right maze wall
+        if (rand_wall[1] != width - 1 and
+                maze[rand_wall[0]][rand_wall[1]+1] == UNVISITED and
+                maze[rand_wall[0]][rand_wall[1]-1] == OPEN):
+            # Find the number of surrounding cells
+            open_cells = count_adj_open_cells(maze, rand_wall)
+            if (open_cells < 2):
+                # Change the wall space to an open cell space
+                maze[rand_wall[0]][rand_wall[1]] = OPEN
+
+                # Mark the walls of the newly marked open cell
+                # Upper cell
+                if (rand_wall[0] != 0):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0] - 1, rand_wall[1]])
+
+                # Bottom cell
+                if (rand_wall[0] != height - 1):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0] + 1, rand_wall[1]])
+
+                # Right cell
+                if (rand_wall[1] != width - 1):
+                    maze, walls = mark_wall(maze, walls, [rand_wall[0], rand_wall[1] + 1])
+            # Remove processed wall from walls list
+            walls.remove(rand_wall)
+            continue
+        
+        # If the processed random wall is still in the walls list, remove it
+        if rand_wall in walls:
+            walls.remove(rand_wall)
+    
+    # Mark the remaining unvisited cells as walls
+    for i in range(0, height):
+        for j in range(0, width):
+            if (maze[i][j] == UNVISITED):
+                maze[i][j] = WALL
+
+    # Set entrance and exit randomly in the entrance and exit rows
+    maze = set_entrance(maze)
+    maze = set_exit(maze)
+
+    return maze
+
