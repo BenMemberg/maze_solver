@@ -1,6 +1,7 @@
 # tests/test_entry_point.py
 import unittest
 
+from agent import MazeAgent
 from constants import OPEN, WALL, UNVISITED
 from generator import count_adj_open_cells, mark_wall, set_entrance, set_exit, generate_maze
 
@@ -92,6 +93,14 @@ class TestMazeEntryPoint(unittest.TestCase):
         generated_maze = generate_maze(15, 10)
         self.assertEqual(len(generated_maze), 10, 'Maze was generated with the wrong height.')
         self.assertEqual(len(generated_maze[0]), 15, 'Maze was generated with the wrong width.')
+
+    def test_maze_agent_in_generated_maze(self):
+        # Tests that the generated mazes are solvable by the maze agent
+        generated_maze = generate_maze(30, 20)
+        maze_agent = MazeAgent(generated_maze)
+        maze_agent.find_exit()
+        self.assertTrue(len(maze_agent.maze_path) > 0, 'Failed to find maze solution path.')
+        self.assertTrue(maze_agent.maze_exit is not (None, None), 'Failed to find maze exit.')
 
 if __name__ == '__main__':
     unittest.main()
